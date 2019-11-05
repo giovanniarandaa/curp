@@ -33,20 +33,27 @@ if(!empty($_POST)){
 
     $mayusculas = strtolower("HoLa");
 
-    $paterno = strtoupper($paterno);
-    $paterno = str_split($paterno);
+    $paternoUpper = strtoupper($paterno);
+    $paterno = str_split($paternoUpper);
     
-    $materno = strtoupper($materno);
-    $materno = str_split($materno);
+    $maternoUpper = strtoupper($materno);
+    $materno = str_split($maternoUpper);
 
-    $nombre = strtoupper($nombre);
-    $nombre = str_split($nombre);
+    $nombreUpper = strtoupper($nombre);
+    $nombre = str_split($nombreUpper);
     
     $primera_vocal = dame_primera_vocal($paterno);
     
     $anio = dame_el_anio_arreglado($anio);
+    $mes = dame_fecha($mes);
+    $dia = dame_fecha($dia);
 
-    $curp .= $paterno[0] . $primera_vocal . $materno[0] . $nombre[0] . $anio;
+    $consonante1 = dame_primera_consonante($paterno);
+    $consonante2 = dame_primera_consonante($materno);
+    $consonante3 = dame_primera_consonante($nombre);
+
+    $curp .= $paterno[0] . $primera_vocal . $materno[0] . $nombre[0] . $anio . $mes . $dia . $consonante1 .
+        $consonante2 . $consonante3 . "09";
 
     print_r("\n\nCURP: " . $curp);
 
@@ -71,6 +78,31 @@ function dame_el_anio_arreglado ($anio){
     }
 
     return $anio;
+}
+
+function dame_fecha($string){
+    if(strlen($string) == 1 ){
+        return '0' . $string;
+    }else{
+        return $string;
+    }
+}
+
+function dame_primera_consonante($string){
+    $consonantes = ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q",
+                    "R", "S", "T", "V", "W", "X", "Y", "Z"];
+    $datos = "";
+    $x = 0;
+    foreach($string as $item){
+        if($x > 0){
+            if(in_array($item, $consonantes)){
+                $datos = $datos . $item;
+                return $datos;
+            }
+        }
+        $x++;
+    }
+    return null;
 }
 
 ?>
